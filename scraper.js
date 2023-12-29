@@ -3,13 +3,11 @@ const fs = require('node:fs');
 
 var data = {
     relationships: [],
-    subjects: {
-    }
+    courses: []
 }
 
 // Add cs courses
 data.relationships = data.relationships.concat([
-
     { type: 'prereq', from: 'CS115', to: 'CS116' },
     { type: 'prereq', from: 'CS135', to: 'CS136' },
 
@@ -53,7 +51,8 @@ data.relationships = data.relationships.concat([
 
 // Add math courses
 data.relationships = data.relationships.concat([
-    { type: 'prereq', from: 'MATH135', to: 'CS245'},
+    { type: 'prereq', from: 'MATH135', to: 'MATH136' },
+    { type: 'prereq', from: 'MATH137', to: 'MATH138' },
 ])
 
 function toObject(site, subject) {
@@ -62,12 +61,13 @@ function toObject(site, subject) {
     const courseList = [...courseElements].reduce((result, e) => {
         return result.concat([{
             type: 'course',
+            subject: subject,
             id: e.querySelector("a").name,
             title: e.children[2].textContent,
             description: e.children[3].textContent,
         }])
     }, []);
-    data.subjects[subject] = courseList;
+    data.courses.push(...courseList);
 }
 function writeFile() {
     let content = JSON.stringify(data);
@@ -78,18 +78,17 @@ function writeFile() {
     });
 }
 
-function addParents(subject) {
-    data.subjects[subject].forEach((course, i) => {
-        let fromList = data.relationships.map(e=>e.from);
-        let toList = data.relationships.map(e=>e.to);
-        if (fromList.includes(course.id) || toList.includes(course.id)) {
-            data.relationships.push({
-                //id: `c${i+1}`, 
-                type: 'child',
-                from: subject,
-                to: course.id
-            })
-        }
+function addParents() {
+    data.courses.forEach((course, i) => {
+        //let fromList = data.relationships.map(e=>e.from);
+        //let toList = data.relationships.map(e=>e.to);
+        //if (fromList.includes(course.id) || toList.includes(course.id)) {
+        data.relationships.push({
+            //id: `c${i+1}`, 
+            type: 'child',
+            from: course.subject,
+            to: course.id
+        })
     })
 }
 
@@ -104,7 +103,7 @@ Promise.all(promises).then(responses => {
     responses.forEach((text, i) => {
         let subject = urls[i][0]
         toObject(text, subject);
-        addParents(subject);
+        addParents();
     })
     writeFile();
 })
