@@ -58,4 +58,10 @@ function getCourseData() {
         writeFile();
     })
 }
-getCourseData();
+if (require.main === module) {
+    getCourseData();
+} else {
+    module.exports = {
+        getCourseData
+    };
+} 

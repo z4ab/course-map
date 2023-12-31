@@ -1,6 +1,7 @@
 var http = require('http');  
 var url = require('url');  
 var fs = require('fs');  
+var scraper = require('./scraper.js');
 const PORT = 5050;
 
 function startServer() {
@@ -24,4 +25,7 @@ function startServer() {
     server.listen(PORT);
     console.log("server running at http://localhost:"+PORT)
 }
-startServer();
+if (require.main === module) {
+    scraper.getCourseData();
+    startServer();
+} 
