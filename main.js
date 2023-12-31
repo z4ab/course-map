@@ -1,37 +1,4 @@
 var courses = []
-var relationships = []
-
-relationships.push(...[
-    { type: 'prereq', from: 'CS246', to: 'CS346' },
-    { type: 'prereq', from: 'CS240', to: 'CS348' },
-    { type: 'prereq', from: 'MATH136', to: 'CS349' },
-    { type: 'prereq', from: 'CS241', to: 'CS349' },
-    { type: 'prereq', from: 'CS350', to: 'CS444' },
-    { type: 'prereq', from: 'CS350', to: 'CS445' },
-    { type: 'prereq', from: 'CS350', to: 'CS446' },
-    { type: 'prereq', from: 'CS350', to: 'CS447' },
-    { type: 'prereq', from: 'CS348', to: 'CS448' },
-    { type: 'prereq', from: 'CS350', to: 'CS448' },
-    { type: 'prereq', from: 'CS245', to: 'CS450' },
-    { type: 'prereq', from: 'CS350', to: 'CS450' },
-    { type: 'prereq', from: 'CS341', to: 'CS451' },
-    { type: 'prereq', from: 'CS348', to: 'CS451' },
-    { type: 'prereq', from: 'CS350', to: 'CS451' },
-    { type: 'prereq', from: 'CS350', to: 'CS452' },
-    { type: 'prereq', from: 'CS350', to: 'CS454' },
-    { type: 'prereq', from: 'CS350', to: 'CS456' },
-    { type: 'prereq', from: 'CS246', to: 'CS457' },
-    { type: 'prereq', from: 'STAT231', to: 'CS457' },
-    { type: 'prereq', from: 'CS350', to: 'CS458' },
-    { type: 'prereq', from: 'CS341', to: 'CS466' },
-    { type: 'prereq', from: 'CS341', to: 'CS480' },
-    { type: 'prereq', from: 'STAT231', to: 'CS480' },
-    { type: 'prereq', from: 'CS341', to: 'CS482' },
-    { type: 'prereq', from: 'STAT231', to: 'CS482' },
-
-    { type: 'prereq', from: 'STAT230', to: 'CS240' },
-    { type: 'prereq', from: 'CS241', to: 'CS240' },
-])
 
 const graph = provider({
     parentType: 'child',

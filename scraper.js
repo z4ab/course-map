@@ -6,58 +6,6 @@ var data = {
     courses: []
 }
 
-// Add cs courses
-data.relationships = data.relationships.concat([
-    //{ type: 'prereq', from: 'CS115', to: 'CS116' },
-    { type: 'prereq', from: 'CS135', to: 'CS136' },
-
-    //{ type: 'prereq', from: 'CS116', to: 'CS230' },
-    //{ type: 'prereq', from: 'CS116', to: 'CS231' },
-    //{ type: 'prereq', from: 'CS116', to: 'CS234' },
-
-    { type: 'prereq', from: 'CS136', to: 'CS246' },
-    { type: 'prereq', from: 'CS136', to: 'CS245' },
-    { type: 'prereq', from: 'CS136', to: 'CS251' },
-
-    { type: 'prereq', from: 'CS245', to: 'CS240' },
-    { type: 'prereq', from: 'CS246', to: 'CS241' },
-    { type: 'prereq', from: 'CS246', to: 'CS350' },
-    { type: 'prereq', from: 'CS246', to: 'CS346' },
-
-    { type: 'prereq', from: 'CS251', to: 'CS350' },
-    //{ type: 'prereq', from: 'CS251', to: 'CS431' },
-    //{ type: 'prereq', from: 'CS251', to: 'CS436' },
-
-    { type: 'prereq', from: 'CS240', to: 'CS341' },
-    { type: 'prereq', from: 'CS240', to: 'CS350' },
-    { type: 'prereq', from: 'CS240', to: 'CS360' },
-    { type: 'prereq', from: 'CS240', to: 'CS365' },
-    { type: 'prereq', from: 'CS240', to: 'CS442' },
-    { type: 'prereq', from: 'CS240', to: 'CS449' },
-
-    { type: 'prereq', from: 'CS241', to: 'CS350' },
-    { type: 'prereq', from: 'CS241', to: 'CS360' },
-    { type: 'prereq', from: 'CS241', to: 'CS365' },
-    { type: 'prereq', from: 'CS241', to: 'CS449' },
-
-    { type: 'prereq', from: 'CS360', to: 'CS462' },
-    { type: 'prereq', from: 'CS365', to: 'CS462' },
-
-    { type: 'prereq', from: 'CS350', to: 'CS343' },
-])
-
-// Add math courses
-data.relationships = data.relationships.concat([
-    { type: 'prereq', from: 'MATH135', to: 'CS245' },
-    { type: 'prereq', from: 'MATH135', to: 'MATH136' },
-    { type: 'prereq', from: 'MATH137', to: 'MATH138' },
-])
-// Add stat courses
-data.relationships = data.relationships.concat([
-    { type: 'prereq', from: 'MATH138', to: 'STAT230' },
-    { type: 'prereq', from: 'STAT230', to: 'STAT231' },
-])
-
 function toObject(site, subject) {
     const doc = new jsdom.JSDOM(site).window.document;
     const courseElements = doc.getElementsByClassName("divTable");
@@ -101,12 +49,14 @@ const urls = [
     ['MATH', 'https://ucalendar.uwaterloo.ca/2324/COURSE/course-MATH.html'],
     ['STAT', 'https://ucalendar.uwaterloo.ca/2324/COURSE/course-STAT.html']
 ]
-var promises = urls.map(e => fetch(e[1]).then(res => res.text()))
-
-Promise.all(promises).then(responses => {
-    responses.forEach((text, i) => {
-        let subject = urls[i][0]
-        toObject(text, subject);
+function getCourseData() {
+    var promises = urls.map(e => fetch(e[1]).then(res => res.text()))
+    Promise.all(promises).then(responses => {
+        responses.forEach((text, i) => {
+            let subject = urls[i][0]
+            toObject(text, subject);
+        })
+        writeFile();
     })
-    writeFile();
-})
+}
+getCourseData();
