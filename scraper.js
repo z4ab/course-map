@@ -45,7 +45,6 @@ function addParents() {
 
 const urls = [
     ['CS', 'https://ucalendar.uwaterloo.ca/2324/COURSE/course-CS.html'],
-    ['ECE', 'https://ucalendar.uwaterloo.ca/2324/COURSE/course-ECE.html'],
     ['MATH', 'https://ucalendar.uwaterloo.ca/2324/COURSE/course-MATH.html'],
     ['STAT', 'https://ucalendar.uwaterloo.ca/2324/COURSE/course-STAT.html']
 ]

@@ -5,6 +5,7 @@ var fs = require('fs');
 function startServer() {
     var server = http.createServer(function(request, response) {  
         var path = url.parse(request.url).pathname;  
+        if (path == "/") path = "/index.html";
         fs.readFile(__dirname + path, function(error, data) {  
             if (error) {  
                 response.writeHead(404);  
@@ -19,6 +20,6 @@ function startServer() {
             }  
         }); 
     });  
-    server.listen(8000);
+    server.listen(5500);
 }
 startServer();
