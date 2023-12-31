@@ -1,6 +1,7 @@
 var http = require('http');  
 var url = require('url');  
 var fs = require('fs');  
+const PORT = 5050;
 
 function startServer() {
     var server = http.createServer(function(request, response) {  
@@ -20,6 +21,7 @@ function startServer() {
             }  
         }); 
     });  
-    server.listen(5500);
+    server.listen(PORT);
+    console.log("server running at http://localhost:"+PORT)
 }
 startServer();
