@@ -1,5 +1,4 @@
-var relationships = []
-relationships.push(...[
+let relationships = [
     //{ type: 'prereq', from: 'CS115', to: 'CS116' },
     { type: 'prereq', from: 'CS135', to: 'CS136' },
 
@@ -72,4 +71,5 @@ relationships.push(...[
 
     { type: 'prereq', from: 'MATH138', to: 'STAT230' },
     { type: 'prereq', from: 'STAT230', to: 'STAT231' },
-])
+]
+module.exports = relationships

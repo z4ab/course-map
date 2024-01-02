@@ -1,4 +1,5 @@
 var courses = []
+var relationships = []
 
 const graph = provider({
     parentType: 'child',
@@ -6,7 +7,10 @@ const graph = provider({
     targetRef: 'from',
 })
 
-fetch('./data.json')
+fetch('http://127.0.0.1:3000/coursedata', {
+    method: "GET",
+    mode: "cors"
+})
     .then((response) => response.json())
     .then((obj) => {
         relationships.push(...obj.relationships)

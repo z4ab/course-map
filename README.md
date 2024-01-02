@@ -7,10 +7,12 @@
 ## Running locally
 
 - Install [Node.js](https://nodejs.org/en)
-- Clone the repository and run the following command:
+- Clone the repository 
+- Run the following commands:
 
 ```
-node server.js
+npm run install
+npm start
 ```
 
 ## Future improvements

@@ -1,6 +1,6 @@
 {
-  "dependencies": {
-    "jsdom": "^23.0.1",
-    "lodash": "^4.17.21"
-  }
+    "scripts": {
+        "start": "start node backend/app.js & start node frontend/server.js",
+        "install": "cd backend && npm install && cd ../frontend && npm install"
+    }
 }
