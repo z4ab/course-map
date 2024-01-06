@@ -19,3 +19,4 @@ npm start
 
 - Using topological sort algorithm to determine the order courses have to be taken
 - Improve design (HTML+CSS)
+- Add more courses
