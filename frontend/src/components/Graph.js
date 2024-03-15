@@ -1,75 +1,98 @@
 import React from 'react';
 import * as d3 from 'd3';
 
-const RADIUS = 10;
+const RADIUS = 30;
 const data = {
     nodes: [
         { id: "CS145", group: 1 },
         { id: "CS146", group: 1 },
+        { id: "CS240", group: 1 },
+        { id: "CS241", group: 1 },
+        { id: "CS245", group: 1 },
         { id: "CS246", group: 1 },
+        { id: "CS350", group: 1 },
+        { id: "CS346", group: 1 },
     ],
     links: [
         { source: "CS145", target: "CS146" },
+        { source: "CS146", target: "CS245" },
         { source: "CS146", target: "CS246" },
+        { source: 'CS245', target: 'CS240' },
+        { source: 'CS246', target: 'CS241' },
+        { source: 'CS246', target: 'CS350' },
+        { source: 'CS246', target: 'CS346' },
     ]
 }
-
-const drawNetwork = (context, width, height, nodes, links,) => {
-    context.clearRect(0, 0, width, height);
-
-    // Draw the links first
-    links.forEach((link) => {
-        context.beginPath();
-        context.moveTo(link.source.x, link.source.y);
-        context.lineTo(link.target.x, link.target.y);
-        context.stroke();
-    });
-
-    // Draw the nodes
-    nodes.forEach((node) => {
-        context.beginPath();
-        context.moveTo(node.x + RADIUS, node.y);
-        context.arc(node.x, node.y, RADIUS, 0, 2 * Math.PI);
-        context.fillStyle = '#cb1dd1';
-        context.fill();
-    });
-};
 
 export default function Graph(props) {
     const {
         width,
         height,
     } = props;
-    const canvasRef = React.useRef(null);
 
     React.useEffect(() => {
-        const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
+        // Create the SVG container.
+        var svg = d3.select("#svgdiv")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("viewBox", [0, 0, width, height])
+            .attr("style", "max-width: 100%; height: auto;");
 
-        if (!context) return;
+        // Initialize the links
+        var link = svg
+            .selectAll("line")
+            .data(data.links)
+            .enter()
+            .append("line")
+            .style("stroke", "#aaa")
 
-        d3.forceSimulation(data.nodes) // apply the simulation to our array of nodes
-            // Force #1: links between nodes
-            .force('link', d3.forceLink(data.links).id((d) => d.id))
-            // Force #2: avoid node overlaps
-            .force('collide', d3.forceCollide().radius(RADIUS))
-            // Force #3: attraction or repulsion between nodes
-            .force('charge', d3.forceManyBody())
-            // Force #4: nodes are attracted by the center of the chart area
-            .force('center', d3.forceCenter(width / 2, height / 2))
+        // Initialize the nodes
+        var node = svg
+            .selectAll("circle")
+            .data(data.nodes)
+            .enter()
+            .append("circle")
+            .attr("r", RADIUS)
+            .style("fill", "cyan");
 
-            .on('tick', () => {
-                drawNetwork(context, width, height, data.nodes, data.links);
-            });
-    }, [width, height, data])
+        var nodetext = svg
+            .selectAll("text")
+            .data(data.nodes)
+            .enter()
+            .append("text")
+            .text((d) => d.id)
+            .style("fill", "white");
+
+        // Let's list the force we wanna apply on the network
+        var simulation = d3.forceSimulation(data.nodes)                 // Force algorithm is applied to data.nodes
+            .force("link", d3.forceLink()                               // This force provides links between nodes
+                .id(function (d) { return d.id; })                     // This provide  the id of a node
+                .links(data.links)                                    // and this the list of links
+            )
+            .force("charge", d3.forceManyBody().strength(-4000))         // This adds repulsion between nodes. Play with the -400 for the repulsion strength
+            .force("center", d3.forceCenter(width / 2, height / 2))     // This force attracts nodes to the center of the svg area
+            .on("end", ticked);
+
+        // This function is run at each iteration of the force algorithm, updating the nodes position.
+        function ticked() {
+            link
+                .attr("x1", function (d) { return d.source.x; })
+                .attr("y1", function (d) { return d.source.y; })
+                .attr("x2", function (d) { return d.target.x; })
+                .attr("y2", function (d) { return d.target.y; });
+
+            node
+                .attr("cx", function (d) { return d.x + 6; })
+                .attr("cy", function (d) { return d.y - 6; });
+            nodetext
+                .attr("x", function (d) { return d.x - 12; })
+                .attr("y", function (d) { return d.y; });
+        }
+    }, []);
 
     return (
-        <div>
-            <canvas
-                ref={canvasRef}
-                width={width}
-                height={height}
-            />
+        <div id="svgdiv">
         </div>
     )
 }
