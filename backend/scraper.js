@@ -3,8 +3,8 @@ const jsdom = require("jsdom");
 
 const urls = [
     ['CS', 'https://ucalendar.uwaterloo.ca/2324/COURSE/course-CS.html'],
-    ['MATH', 'https://ucalendar.uwaterloo.ca/2324/COURSE/course-MATH.html'],
-    ['STAT', 'https://ucalendar.uwaterloo.ca/2324/COURSE/course-STAT.html']
+    //['MATH', 'https://ucalendar.uwaterloo.ca/2324/COURSE/course-MATH.html'],
+    //['STAT', 'https://ucalendar.uwaterloo.ca/2324/COURSE/course-STAT.html']
 ]
 async function getCourseData() {
     let data = {
