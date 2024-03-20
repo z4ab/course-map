@@ -52,9 +52,7 @@ async function getCourseData() {
 }
 
 var transform;
-async function renderNodes(width, height) {
-    console.log("rendering!!!!!!!!!!!!!!!!!!")
-
+async function renderNodes(width, height, setPanelInfo) {
     // Create the SVG container.
     var svg = d3.select("#svgdiv")
         .append("svg")
@@ -69,10 +67,9 @@ async function renderNodes(width, height) {
             nodetext.attr("transform", (transform = e.transform));
             node.attr("r", RADIUS / Math.sqrt(transform.k));
             nodetext
-                .attr("x", function (d) { return d.x - 40 + 9*Math.sqrt(transform.k) ; })
-                .attr("y", function (d) { return d.y + 8 - Math.sqrt(transform.k)/2 ; });
+                .attr("x", function (d) { return d.x - 40 + 9 * Math.sqrt(transform.k); })
+                .attr("y", function (d) { return d.y + 8 - Math.sqrt(transform.k) / 2; });
             nodetext.attr("font-size", RADIUS / Math.sqrt(transform.k));
-            console.log(transform.k)
         }).scaleExtent([1, 5]));
 
     // Initialize the links
@@ -90,7 +87,11 @@ async function renderNodes(width, height) {
         .enter()
         .append("circle")
         .attr("r", RADIUS)
-        .style("fill", "#bbceed");
+        .style("fill", "#bbceed")
+        .on("click", (e) => {
+            let courseData = e.srcElement.__data__;
+            setPanelInfo(courseData);
+        });
 
     var nodetext = svg
         .selectAll("text")
@@ -129,15 +130,10 @@ async function renderNodes(width, height) {
     }
 }
 
-export default function Graph(props) {
-    const {
-        width,
-        height,
-    } = props;
-
+export default function Graph({width, height, setPanelInfo}) {
     React.useEffect(() => {
         getCourseData()
-            .then(() => renderNodes(width, height));
+            .then(() => renderNodes(width, height, setPanelInfo));
     }, []);
 
     return (
