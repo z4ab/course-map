@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import * as d3 from "d3";
 
@@ -8,12 +10,9 @@ var data = {
     links: [],
 };
 
-const SERVER_URL = "http://127.0.0.1:3030";
-
 async function getCourseData() {
-    await fetch(SERVER_URL + "/coursedata", {
+    await fetch("/api/coursedata", {
         method: "GET",
-        mode: "cors",
     })
         .then((response) => response.json())
         .then((obj) => {
