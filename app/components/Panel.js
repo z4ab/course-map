@@ -1,4 +1,5 @@
-import "../App.css";
+'use client';
+
 import React from 'react';
 
 export default function Panel({panelInfo, addCourse}) {

@@ -11,3 +11,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#infoPanel {
+    position: absolute;
+    top: 0;
+    left: 70%;
+    background-color: rgb(171, 171, 171);
+    width: 30%;
+    text-align: center;
+}
+
+#courseList {
+    position: absolute;
+    bottom:0;
+    left: 70%;
+    background-color: rgb(171, 171, 171);
+    width: 30%;
+    text-align: center;
+}
