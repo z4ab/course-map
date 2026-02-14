@@ -9,23 +9,27 @@ import CourseList from './components/CourseList';
 export default function Home() {
   const [panelInfo, setPanelInfo] = React.useState("");
   const [courses, setCourses] = React.useState([]);
-  
-  async function addCourse(id) {
+
+  // Load courses from localStorage on mount
+  React.useEffect(() => {
+    const savedCourses = localStorage.getItem('selectedCourses');
+    if (savedCourses) {
+      try {
+        setCourses(JSON.parse(savedCourses));
+      } catch (error) {
+        console.error('Error loading courses from localStorage:', error);
+      }
+    }
+  }, []);
+
+  function addCourse(id) {
     if (!courses.includes(id)) {
       const newCourses = [...courses, id];
       setCourses(newCourses);
       console.log(newCourses);
-      
-      await fetch("/api/selection", {
-        method: "POST",
-        body: JSON.stringify({ courses: newCourses }),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-        .then(r => {
-          console.log(r);
-        })
+
+      // Save to localStorage
+      localStorage.setItem('selectedCourses', JSON.stringify(newCourses));
     }
   }
   
