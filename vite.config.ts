@@ -6,5 +6,5 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   base: process.env.BASE_PATH ?? "/",
   plugins: [react()],
-  test: { include: ["tests/**/*.test.ts"] },
+  test: { include: ["tests/**/*.test.{ts,tsx}"] },
 });

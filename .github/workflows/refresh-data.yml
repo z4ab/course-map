@@ -1,0 +1,40 @@
+name: Refresh course data
+
+# Pulls current CS, MATH, STAT and CO courses from the UW Open Data API and
+# commits the parsed dataset if anything changed. Needs a repository secret
+# named UW_API_KEY (free key: https://uwaterloo.ca/api/register).
+on:
+  schedule:
+    - cron: "17 9 * * 1" # Mondays, 09:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Fetch from the Open Data API
+        run: npm run data:fetch
+        env:
+          UW_API_KEY: ${{ secrets.UW_API_KEY }}
+      - name: Parse requirements
+        run: npm run data:build
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/courses.json data/parse-report.md
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "Refresh course data"
+            git push
+          fi

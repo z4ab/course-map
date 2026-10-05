@@ -14,7 +14,8 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import type { RawCourse } from "../src/lib/build";
 
-const API = "https://openapi.data.uwaterloo.ca/v3";
+// UW_API_BASE is only for tests against a local mock.
+const API = process.env.UW_API_BASE ?? "https://openapi.data.uwaterloo.ca/v3";
 const DEFAULT_SUBJECTS = ["CS", "MATH", "STAT", "CO"];
 const DEFAULT_TERMS = 6; // two years of fall/winter/spring
 
@@ -96,12 +97,13 @@ for (const term of [...terms].reverse()) {
   }
 }
 
-await mkdir("data/raw", { recursive: true });
+const outDir = process.env.UW_OUT_DIR ?? "data/raw";
+await mkdir(outDir, { recursive: true });
 const out = {
   fetchedAt: new Date().toISOString(),
   terms: terms.map((t) => t.termCode),
   subjects,
   courses: [...merged.values()],
 };
-await writeFile("data/raw/courses.json", JSON.stringify(out, null, 2));
-console.log(`Saved ${out.courses.length} courses to data/raw/courses.json`);
+await writeFile(`${outDir}/courses.json`, JSON.stringify(out, null, 2));
+console.log(`Saved ${out.courses.length} courses to ${outDir}/courses.json`);
