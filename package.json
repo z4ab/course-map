@@ -1,18 +1,31 @@
 {
-    "name": "course-map",
-    "version": "1.0.0",
-    "private": true,
-    "scripts": {
-        "dev": "next dev",
-        "build": "next build",
-        "start": "next start",
-        "lint": "next lint"
-    },
-    "dependencies": {
-        "d3": "^7.9.0",
-        "jsdom": "^23.0.1",
-        "next": "^16.1.6",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0"
-    }
+  "name": "course-map",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc -b",
+    "data:fetch": "tsx scripts/fetch-courses.ts",
+    "data:build": "tsx scripts/build-data.ts",
+    "data": "npm run data:fetch && npm run data:build",
+    "data:sample": "tsx scripts/build-data.ts --sample"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "tsx": "^4.23.15",
+    "typescript": "5.6",
+    "vite": "^6.4.3",
+    "vitest": "^3.2.7"
+  }
 }
